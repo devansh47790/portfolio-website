@@ -1,0 +1,66 @@
+Build me a premium personal portfolio and freelance business website for a web developer based in Melbourne, Australia.
+
+About me:
+- I am a web developer with professional experience in WordPress development, frontend implementation, website customization, SEO-focused builds, troubleshooting, maintenance, and responsive UI development.
+- I want to use this website to attract freelance clients and also showcase myself professionally to employers.
+- My ideal clients are small businesses, agencies, and brands that need modern, high-performing websites.
+
+Main goals:
+1. Showcase my projects and skills professionally
+2. Position me as someone who can build clean, modern, conversion-focused websites
+3. Generate freelance inquiries
+4. Be technically strong for SEO
+5. Feel premium and trustworthy
+
+Please build:
+- Home page
+- About page
+- Projects page
+- Services page
+- Contact page
+- Optional blog
+
+Brand message:
+I help businesses create better websites through clean development, better UX, fast performance, and strong structure.
+
+Services to highlight:
+- WordPress website development
+- Custom frontend development
+- Landing page development
+- Website redesigns
+- Website support and maintenance
+- SEO-friendly website setup
+
+Design direction:
+- dark premium theme
+- modern developer + agency hybrid feel
+- clean layout with strong typography
+- subtle motion and polished hover effects
+- professional and conversion-oriented
+- not overly corporate, but not casual either
+
+Please include:
+- strong hero headline and call to actions
+- project showcase with realistic sample projects
+- services section with clear business value
+- trust-building content
+- process/workflow section
+- testimonials placeholder
+- lead form with validation
+- SEO metadata for every page
+- schema markup
+- sitemap and robots.txt
+- mobile responsiveness
+- reusable component-based codebase
+
+Tech preference:
+- Use Next.js with TypeScript if possible
+- Use a scalable folder structure
+- Create reusable components and content arrays
+- Make the code readable and easy to edit later
+- Add comments in key code sections
+
+Important:
+Make this look like a high-quality website that could realistically help me start freelancing in Melbourne and get noticed by clients and recruiters.
+Avoid generic template feel.
+Use realistic, polished, non-cringe copy.

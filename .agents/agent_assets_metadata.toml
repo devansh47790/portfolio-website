@@ -1,0 +1,50 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "2kD9PZZM-WVYsDL0NEqb-"
+uri = "file://artifacts/portfolio/public/images/hero-bg.png"
+type = "image"
+title = "Abstract dark geometric background"
+
+[[generated]]
+id = "CH-4hqb3m33aFJynbJaFd"
+uri = "file://artifacts/portfolio/public/images/about-texture.png"
+type = "image"
+title = "Web dev code texture"
+
+[[generated]]
+id = "2jBqz0fyhAyUQtRbCU8OK"
+uri = "file://artifacts/portfolio/public/images/project-1.png"
+type = "image"
+title = "Tradesperson booking UI"
+
+[[generated]]
+id = "sd5ucT-ATg2nfeNcNKBDB"
+uri = "file://artifacts/portfolio/public/images/project-2.png"
+type = "image"
+title = "Skincare e-commerce site"
+
+[[generated]]
+id = "uDGoaWfYd36dD3fLtu5sU"
+uri = "file://artifacts/portfolio/public/images/project-3.png"
+type = "image"
+title = "Law firm website"
+
+[[generated]]
+id = "OtjhWo46WrqBdWzvaXfAv"
+uri = "file://artifacts/portfolio/public/images/project-4.png"
+type = "image"
+title = "SaaS landing page"
+
+[[generated]]
+id = "FjgqKvRQJuqV60AvcfMMR"
+uri = "file://artifacts/portfolio/public/images/project-5.png"
+type = "image"
+title = "Restaurant website"
+
+[[generated]]
+id = "dQg_v6v_nFTqigByzP9NB"
+uri = "file://artifacts/portfolio/public/images/project-6.png"
+type = "image"
+title = "Finance dashboard"

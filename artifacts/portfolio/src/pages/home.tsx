@@ -2,7 +2,7 @@ import { SEO } from "@/components/ui/SEO";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { ArrowRight, CheckCircle2, Terminal, Code2, MonitorSmartphone } from "lucide-react";
 import { Link } from "wouter";
-import { projects } from "@/data/projects";
+
 import { services } from "@/data/services";
 import { blogPosts } from "@/data/blog";
 

@@ -76,6 +76,7 @@
     "zod": "catalog:"
   },
   "dependencies": {
+    "qs": "^6.15.1",
     "react-markdown": "^10.1.0"
   }
 }

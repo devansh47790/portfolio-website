@@ -8,6 +8,7 @@ export interface Project {
   tags: string[];
   image: string;
   projectUrl?: string; // use the real field name
+   featured: boolean;
 }
 
 const STRAPI_URL = "http://localhost:1337";
@@ -25,6 +26,7 @@ interface StrapiProject {
   tags: string[];
   projectUrl?: string;
   image?: StrapiImage | null;
+    featured?: boolean;
 }
 
 interface StrapiProjectsResponse {
@@ -53,6 +55,39 @@ export async function getProjects(): Promise<Project[]> {
     excerpt: item.excerpt,
     tags: Array.isArray(item.tags) ? item.tags : [],
     projectUrl: item.projectUrl, // fixed
+    image: item.image?.url
+      ? `${STRAPI_URL}${item.image.url}`
+      : "/images/fallback-project.png",
+  }));
+}
+
+
+export async function getFeaturedProjects(): Promise<Project[]> {
+  const res = await fetch(
+    `${STRAPI_URL}/api/projects?filters[featured][$eq]=true&populate=image&sort[0]=title:asc`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch featured projects: ${res.status} ${res.statusText}`);
+  }
+
+  const data: StrapiProjectsResponse = await res.json();
+
+  return data.data.map((item) => ({
+    id: item.id,
+    documentId: item.documentId,
+    title: item.title,
+    excerpt: item.excerpt,
+    tags: Array.isArray(item.tags) ? item.tags : [],
+    projectUrl: item.projectUrl,
+    featured: Boolean(item.featured),
     image: item.image?.url
       ? `${STRAPI_URL}${item.image.url}`
       : "/images/fallback-project.png",

@@ -5,6 +5,27 @@ import { Link } from "wouter";
 
 import { services } from "@/data/services";
 import { blogPosts } from "@/data/blog";
+import { useEffect, useState } from "react";
+import { getFeaturedProjects, type Project } from "@/lib/api/projects";
+
+
+const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+const [loadingFeatured, setLoadingFeatured] = useState(true);
+useEffect(() => {
+  async function loadFeatured() {
+    try {
+      const data = await getFeaturedProjects();
+      setFeaturedProjects(data);
+    } catch (err) {
+      console.error("Failed to load featured projects", err);
+    } finally {
+      setLoadingFeatured(false);
+    }
+  }
+
+  loadFeatured();
+}, []);
+
 
 export default function Home() {
   return (
@@ -130,29 +151,48 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects.slice(0, 4).map((project) => (
-              <div key={project.id} className="group relative overflow-hidden rounded-none border border-border bg-background">
-                <div className="aspect-[16/9] overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    loading="lazy"
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
-                  />
-                </div>
-                <div className="p-6 md:p-8">
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tech.slice(0,3).map(t => (
-                      <span key={t} className="text-xs font-mono text-muted-foreground bg-accent/5 px-2 py-1 border border-accent/10">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2 group-hover:text-accent transition-colors">{project.title}</h3>
-                  <p className="text-muted-foreground">{project.description}</p>
-                </div>
-              </div>
+           {loadingFeatured && <p>Loading...</p>}
+
+{!loadingFeatured && (
+  <>
+    {featuredProjects.map((project) => (
+      <a
+        key={project.documentId}
+        href={project.projectUrl || "#"}
+        target="_blank"
+        rel="noreferrer"
+        className="group relative overflow-hidden rounded-none border border-border bg-background"
+      >
+        <div className="aspect-[16/9] overflow-hidden">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+          />
+        </div>
+
+        <div className="p-6 md:p-8">
+          <div className="flex flex-wrap gap-2 mb-4">
+            {project.tags.slice(0, 3).map((t) => (
+              <span
+                key={t}
+                className="text-xs font-mono text-muted-foreground bg-accent/5 px-2 py-1 border border-accent/10"
+              >
+                {t}
+              </span>
             ))}
+          </div>
+
+          <h3 className="text-2xl font-bold mb-2 group-hover:text-accent transition-colors">
+            {project.title}
+          </h3>
+
+          <p className="text-muted-foreground">{project.excerpt}</p>
+        </div>
+      </a>
+    ))}
+  </>
+)}
           </div>
         </div>
       </section>

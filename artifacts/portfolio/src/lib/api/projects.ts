@@ -1,4 +1,4 @@
-// src/lib/api/projects.ts
+import { getStrapiMediaUrl } from "@/lib/api/strapi";
 
 export interface Project {
   id: number;
@@ -7,39 +7,74 @@ export interface Project {
   excerpt: string;
   tags: string[];
   image: string;
-  projectUrl?: string; // use the real field name
-   featured: boolean;
+  projectUrl?: string;
+  featured: boolean;
 }
 
-const STRAPI_URL = "http://localhost:1337";
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+const FALLBACK_PROJECT_IMAGE = "/images/fallback-project.png";
 
-interface StrapiImage {
-  url: string;
+interface StrapiImageNode {
+  url?: string | null;
   alternativeText?: string | null;
+  attributes?: {
+    url?: string | null;
+    alternativeText?: string | null;
+  } | null;
+}
+
+interface StrapiImageRelation extends StrapiImageNode {
+  data?: StrapiImageNode | null;
 }
 
 interface StrapiProject {
   id: number;
-  documentId: string;
-  title: string;
-  excerpt: string;
-  tags: string[];
+  documentId?: string;
+  title?: string;
+  excerpt?: string;
+  tags?: unknown;
   projectUrl?: string;
-  image?: StrapiImage | null;
-    featured?: boolean;
+  image?: StrapiImageRelation | null;
+  featured?: boolean;
 }
 
 interface StrapiProjectsResponse {
-  data: StrapiProject[];
-  meta: Record<string, unknown>;
+  data?: StrapiProject[];
+  meta?: Record<string, unknown>;
 }
 
-export async function getProjects(): Promise<Project[]> {
-  const res = await fetch(`${STRAPI_URL}/api/projects?populate=image`, {
+function resolveImageUrl(image?: StrapiImageRelation | null) {
+  const rawUrl =
+    image?.url ??
+    image?.attributes?.url ??
+    image?.data?.url ??
+    image?.data?.attributes?.url;
+
+  return rawUrl ? getStrapiMediaUrl(rawUrl) : FALLBACK_PROJECT_IMAGE;
+}
+
+function mapProject(item: StrapiProject): Project {
+  return {
+    id: item.id,
+    documentId: item.documentId || String(item.id),
+    title: item.title || "Untitled project",
+    excerpt: item.excerpt || "",
+    tags: Array.isArray(item.tags)
+      ? item.tags.filter((tag): tag is string => typeof tag === "string")
+      : [],
+    image: resolveImageUrl(item.image),
+    projectUrl: item.projectUrl,
+    featured: Boolean(item.featured),
+  };
+}
+
+async function fetchProjects(path: string, cache?: RequestCache): Promise<Project[]> {
+  const res = await fetch(`${STRAPI_URL}${path}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
+    cache,
   });
 
   if (!res.ok) {
@@ -47,49 +82,16 @@ export async function getProjects(): Promise<Project[]> {
   }
 
   const data: StrapiProjectsResponse = await res.json();
-
-  return data.data.map((item) => ({
-    id: item.id,
-    documentId: item.documentId,
-    title: item.title,
-    excerpt: item.excerpt,
-    tags: Array.isArray(item.tags) ? item.tags : [],
-    projectUrl: item.projectUrl, // fixed
-    image: item.image?.url
-      ? `${STRAPI_URL}${item.image.url}`
-      : "/images/fallback-project.png",
-  }));
+  return Array.isArray(data.data) ? data.data.map(mapProject) : [];
 }
 
+export async function getProjects(): Promise<Project[]> {
+  return fetchProjects("/api/projects?populate=image");
+}
 
 export async function getFeaturedProjects(): Promise<Project[]> {
-  const res = await fetch(
-    `${STRAPI_URL}/api/projects?filters[featured][$eq]=true&populate=image&sort[0]=title:asc`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-    }
+  return fetchProjects(
+    "/api/projects?filters[featured][$eq]=true&populate=image&sort[0]=title:asc",
+    "no-store"
   );
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch featured projects: ${res.status} ${res.statusText}`);
-  }
-
-  const data: StrapiProjectsResponse = await res.json();
-
-  return data.data.map((item) => ({
-    id: item.id,
-    documentId: item.documentId,
-    title: item.title,
-    excerpt: item.excerpt,
-    tags: Array.isArray(item.tags) ? item.tags : [],
-    projectUrl: item.projectUrl,
-    featured: Boolean(item.featured),
-    image: item.image?.url
-      ? `${STRAPI_URL}${item.image.url}`
-      : "/images/fallback-project.png",
-  }));
 }

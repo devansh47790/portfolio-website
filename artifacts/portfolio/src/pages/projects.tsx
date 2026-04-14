@@ -1,10 +1,9 @@
-//artifacts\portfolio\src\pages\projects.tsx
-
 import { useEffect, useState } from "react";
-import { SEO } from "@/components/ui/SEO";
-import { PageTransition } from "@/components/ui/PageTransition";
-import { getProjects, type Project } from "@/lib/api/projects";
 import { ExternalLink } from "lucide-react";
+
+import { getProjects, type Project } from "@/lib/api/projects";
+import { PageTransition } from "@/components/ui/PageTransition";
+import { SEO } from "@/components/ui/SEO";
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -29,8 +28,8 @@ export default function Projects() {
   return (
     <PageTransition>
       <SEO
-        title="Selected Projects — Web Development Work"
-        excerpt="Browse web development projects by a Melbourne-based freelance developer."
+        title="Selected Projects - Web Development Work"
+        description="Browse web development projects by a Melbourne-based freelance developer."
       />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
@@ -49,14 +48,14 @@ export default function Projects() {
         {!loading && !error && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project) => (
-             <a
-  key={project.documentId}
-  href={project.projectUrl || "#"}
-  target="_blank"
-  rel="noreferrer"
-  className="group flex flex-col border border-border bg-card/30 hover:border-accent/50 transition-colors"
-  aria-label={`Open project website: ${project.title}`}
->
+              <a
+                key={project.documentId}
+                href={project.projectUrl || "#"}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex flex-col border border-border bg-card/30 hover:border-accent/50 transition-colors"
+                aria-label={`Open project website: ${project.title}`}
+              >
                 <div className="aspect-[4/3] overflow-hidden bg-muted relative">
                   <img
                     src={project.image}
@@ -73,12 +72,12 @@ export default function Projects() {
 
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map((t) => (
+                    {project.tags.map((tag) => (
                       <span
-                        key={t}
+                        key={tag}
                         className="text-xs font-mono text-muted-foreground bg-background px-2 py-1 border border-border"
                       >
-                        {t}
+                        {tag}
                       </span>
                     ))}
                   </div>
